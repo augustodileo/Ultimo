@@ -1,0 +1,49 @@
+﻿@model List<Ultimo.Models.Apunte>
+@{
+    ViewBag.Title = "Inicio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Muestra productos</title>
+    <style>
+        .grupodeproductos {
+            margin: 0 auto;
+            text-align: center;
+            background-color: #e5e5e5;
+            padding-left: 350px;
+            padding-right: 350px;
+        }
+
+        .producto {
+            background-color: #c2c2c2;
+            margin: 5px;
+            padding: 15px;
+            border-radius: 15px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="grupodeproductos">
+        @foreach (var apunte in Model)
+        {
+            string IdPath = "/Apunte/Index/" + @apunte.Id;
+            <div class="producto">
+                <div class="imagen-producto">
+                    <a href="@IdPath"><img src="@apunte.FotoPath" alt="" height="200" width="200"></a>
+                </div>
+                <div class="info-producto">
+                    <a href="@IdPath"><h3 class="nombre-producto" style="text-align:center">@apunte.Title</h3></a> 
+                    <h3 class="precio-producto" style="text-align:left"> $@apunte.Precio </h3>
+                    <h5 class="precio-producto" style="text-align:left"> @apunte.Materia</h5>
+                    <h6 class="precio-producto" style="text-align:left"> @apunte.Facultad</h6>
+                    <h6 class="precio-producto" style="text-align:left"> @apunte.Universidad</h6>
+                </div>
+            </div>
+            }
+    </div>
+</body>
+</html>

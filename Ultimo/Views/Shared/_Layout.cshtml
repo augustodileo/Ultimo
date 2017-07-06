@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div style="width: auto; background-color: #728ea7;">
+        @if (Request.IsAuthenticated)
+        {
+            <strong> @Html.ActionLink("Publicar apunte", "Crear", "Apunte")</strong>
+            <span> | </span>
+            @Html.ActionLink("Sign Out", "Logout", "User")
+            <span> | </span>
+            <strong><a href="/User/Index">@User.Identity.Name</a></strong>
+        }
+        else
+        {
+            @Html.ActionLink("Register", "Register", "User")
+            <span> | </span>
+            @Html.ActionLink("Sign In", "Login", "User")
+
+        }
+    </div>
+
+    @RenderBody()
+    @RenderSection("scripts", required: false)
+</body>
+</html>

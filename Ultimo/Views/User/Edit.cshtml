@@ -1,0 +1,70 @@
+﻿@model Ultimo.Models.Usuario
+
+@{
+    ViewBag.Title = "Perfil - Editar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edita tus datos</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            Nombre
+            <div class="col-md-10">
+                <input data-val="true" required title="Complete este campo con su nombre completo. OBLIGATORIO" pattern="[A-Za-z ]{8,30}" id="Name" name="Name" type="text" value="@Model.Name" />
+                @Html.ValidationMessageFor(name => name.Name)
+            </div>
+        </div>
+        
+        <div class="form-group">
+            Email
+            <div class="col-md-10">
+                <input data-val="true" title="Complete este campo con su correo electronico. OBLIGATORIO" required id="Email" name="Email" type="email" value="@Model.Email" onchange="chkEmail();" />
+                <span id="errorEmail" class="field-validation-error" data-valmsg-for="Email" data-valmsg-replace="true"></span>  
+            </div>
+        </div>
+
+        <div class="form-group">
+            Telefono
+            <div class="editor-field">
+
+                <input type="tel" id="Tel" value="@(Model.Tel)" required title="Utilice el siguiente formato 11 XXXX-YYYY. OBLIGATORIO" name="Tel" pattern="^\d{2} \d{4}-\d{4}$">
+                @Html.ValidationMessageFor(tel => tel.Tel)
+            </div>
+        </div>
+        <br />
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input id="Save" type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+<script src="~/Scripts/jquery-3.1.1.js"></script>
+<script type="text/javascript">
+    function chkEmail() {
+        var path = "/User/Buscar?email=" + document.getElementById("Email").value;
+        $.ajax({
+            url: path,
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                if (data.status == true) {
+                    document.getElementById("errorEmail").innerHTML = "<b>Correo ya utilizado, favor verificar</b>";
+                    document.getElementById("Save").disabled = true;
+                }
+                else {
+                    document.getElementById("errorEmail").innerHTML = "";
+                    document.getElementById("Save").disabled = false;
+                }
+            },
+        });
+    }
+</script>

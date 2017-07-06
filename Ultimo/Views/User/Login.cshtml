@@ -1,0 +1,32 @@
+﻿@model Ultimo.Models.Usuario
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true, "Login failed. Check your login details.");
+    <div class="editor-label">
+        @Html.LabelFor(email => email.Email)
+    </div>
+    <div class="editor-field">
+        @Html.TextBoxFor(email => email.Email, new { type = "email"})
+        @Html.ValidationMessageFor(email => email.Email)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(contraseña => contraseña.Password)
+    </div>
+    <div class="editor-field">
+        @Html.TextBoxFor(contraseña => contraseña.Password, new { type = "password"})
+        @Html.ValidationMessageFor(contraseña => contraseña.Password)
+    </div>
+    <div class="editor-label">
+        @Html.CheckBoxFor(u => u.RememberMe)
+        @Html.LabelFor(u => u.RememberMe)
+    </div>  
+    <p>
+        <input type="submit" value="Log On" />
+    </p>
+}

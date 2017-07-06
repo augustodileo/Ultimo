@@ -1,0 +1,91 @@
+﻿@model Ultimo.Models.RegisterModel
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Register</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken();
+    @Html.ValidationSummary(true, "Datos invalidos");
+    <div class="editor-label">
+        @Html.LabelFor(name => name.Name)
+    </div>
+    <div class="editor-field">
+        <input data-val="true" required title="Complete este campo con su nombre completo. OBLIGATORIO" pattern="[A-Za-z ]{8,30}" id="Name" name="Name" type="text" value="" />
+        @Html.ValidationMessageFor(name => name.Name)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(email => email.Email)
+    </div>
+    <div class="editor-field">
+        <input data-val="true" title="Complete este campo con su correo electronico. OBLIGATORIO" required id="Email" name="Email" type="email" value="" onchange="chkEmail();" />
+        <span id="errorEmail" class="field-validation-error" data-valmsg-for="Email" data-valmsg-replace="true"></span>     
+    </div>
+
+    <div>
+        @Html.LabelFor(contraseña => contraseña.Password)
+    </div>
+    <div>
+        <input type="password" id="Password" name="Password" required pattern="[A-Za-z ].{8,}" title="La contraseña debe contener al menos 8 caracteres. OBLIGATORIO" value="" onchange="chkPass()" />
+        <span id="errorPassword" class="field-validation-error" data-valmsg-for="Password" data-valmsg-replace="true"></span>
+    </div>
+
+    <div>
+        Confirm Password
+    </div>
+    <div>
+        <input type="password" id="ConfirmPassword" name="Confirm Password" required pattern="[A-Za-z ].{8,}" title="Las contraseñas deben coincidir. OBLIGATORIO" value="" onchange="chkPass()"/>
+        <span id="errorConPassword" data-valmsg-for="ConfirmPassword" data-valmsg-replace="true"></span>
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(tel => tel.Tel)
+    </div>
+    <div class="editor-field">
+        <input type="tel" id="Tel" required title="Utilice el siguiente formato 11 XXXX-YYYY. OBLIGATORIO" name="Tel" pattern="^\d{2} \d{4}-\d{4}$">
+        @Html.ValidationMessageFor(tel => tel.Tel)
+    </div>
+
+    <p>
+        <input id="Register" type="submit" value="Register" disabled />
+    </p>
+}
+<script src="~/Scripts/jquery-3.1.1.js"></script>
+<script type="text/javascript">
+    var flag = 0;
+    function chkPass() {
+        if (document.getElementById('Password').value != document.getElementById('ConfirmPassword').value && flag != 0) {
+            document.getElementById('Password').setCustomValidity('The two passwords must match.');
+            document.getElementById('ConfirmPassword').setCustomValidity('The two passwords must match.');
+            document.getElementById("Register").disabled = true;
+        } else {
+            flag = 1;
+            document.getElementById('Password').setCustomValidity('');
+            document.getElementById('ConfirmPassword').setCustomValidity('');
+            document.getElementById("Register").disabled = false;
+        }
+    }
+
+    function chkEmail() {
+        var path = "/User/Buscar?email=" + document.getElementById("Email").value;
+        $.ajax({
+            url: path,
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                if (data.status == true) {
+                    document.getElementById("errorEmail").innerHTML = "<b>Correo ya utilizado, favor verificar</b>";
+                    document.getElementById("Register").disabled = true;
+                }
+                else {
+                    document.getElementById("errorEmail").innerHTML = "";
+                    document.getElementById("Register").disabled = false;
+                }
+            },
+        });
+    }
+</script>

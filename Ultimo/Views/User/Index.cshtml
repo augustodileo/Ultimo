@@ -1,0 +1,50 @@
+﻿@model Ultimo.Models.Usuario
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<div>
+    <h4>Usuario</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        @{
+            if (ViewBag.Edit == true)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Email)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Email)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Tel)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Tel)
+                </dd>
+            }
+        }
+    </dl>
+</div>
+<p>
+    @{
+        if (ViewBag.Edit == true)
+        {
+            @Html.ActionLink("Edit", "Edit")
+        }
+    }
+</p>
